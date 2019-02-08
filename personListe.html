@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Visalle</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		.personer {
+			border: 1px solid black;
+			margin: 5px;
+			padding: 5px;
+			background-color: aquamarine;
+			border-radius: 20px;
+		}
+
+
+
+		.billede img {
+			max-width: 50%;
+			border-radius: 100%;
+
+
+		}
+
+		.billede {
+			text-align: center;
+		}
+
+		h2 {
+			text-shadow: 0 0 3px #FF0000;
+
+
+		}
+
+
+		#liste {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr 1fr;
+			border: 1px solid silver;
+
+		}
+	</style>
+</head>
+
+<body>
+	<div id="liste"></div>
+
+	<script>
+		let allePersoner =
+
+			document.addEventListener("DOMContentLoaded", start);
+
+		function start() {
+			let dest = document.querySelector("#liste");
+
+			async function getJson() {
+				let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1OLlD_GRoz71piHvnW306omRAyHS7vtLOILQt-K0YF_c");
+				allePersoner = await jsonData.json();
+				visPersoner();
+			}
+
+			function visPersoner() {
+				allePersoner.forEach((personer) => {
+					dest.innerHTML += `
+                        <div class="personer">
+                            <h2>${personer.navn}</h2>
+<div class="billede">
+                            <img src="${personer.billede}" alt="${personer.navn}">
+	</div>
+                            <p>Alder: ${personer.alder}</p>
+                            <p>Køn: ${personer.køn}</p>
+<p>Github: <a href="http://www.github.com/${personer.github}">${personer.github}</a></p>
+                            <p>Email: ${personer.email}</p>
+                            <p>Hold: ${personer.Hold}</p>
+                            <p>Historie: ${personer.historie}</p>
+                        </div>`;
+				})
+			}
+
+			getJson();
+		}
+	</script>
+</body>
+
+</html>
